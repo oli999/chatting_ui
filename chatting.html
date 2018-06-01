@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+	<title>chatting.html</title>
+	<link rel="stylesheet" href="css/bootstrap.css"/>
+	<link rel="stylesheet" href="css/animate.min.css"/>
+	<style>
+	.commentArea {
+		font: 14px Consolas;
+		padding: 0 10px;
+		margin-top: 20px;  
+		background-color: #eee;
+		height: 400px;  
+		overflow-x: auto;
+		border-radius: 10px 10px 0px 0px;
+		border: 1px solid gray;
+	}
+	.overwrap{
+		position: absolute;
+		width: 100%;
+		height: 520px;
+		top:0;
+		left:0;
+		background-color: #ccc;
+		border-radius: 10px;
+	}
+	.bubbledLeft,.bubbledRight {
+	    margin-top: 10px;
+	    margin-bottom: 10px;
+	    padding: 5px 9px;
+	    max-width: 50%;
+	    clear: both;
+	    position: relative;
+	    font-weight: bold;
+	}
+
+	.bubbledLeft{
+	    float: left;
+	    margin-right: auto;
+	    -webkit-border-radius: 8px 8px 8px 0px;
+	    -moz-border-radius: 8px 8px 8px 0px;
+	    -o-border-radius: 8px 8px 8px 0px;
+	    -ms-border-radius: 8px 8px 8px 0px;
+	    border-radius: 8px 8px 8px 0px;
+	    background-color: #65B045;
+	    color: #ffffff;
+	}
+
+	.bubbledLeft:before {
+	    border-bottom: 10px solid #65B045;
+	    border-left: 9px solid rgba(0, 0, 0, 0);
+	    position: absolute;
+	    bottom: 0;
+	    left: -8px;
+	    content: "";
+	}
+
+	.bubbledRight{
+	    float: right;
+	    margin-left: auto;
+	    text-align: right;
+	    -webkit-border-radius: 8px 8px 0px 8px;
+	    -moz-border-radius: 8px 8px 0px 8px;
+	    -o-border-radius: 8px 8px 0px 8px;
+	    -ms-border-radius: 8px 8px 0px 8px;
+	    border-radius: 8px 8px 0px 8px;
+	    background-color: #07D;
+	    color: white;
+	}
+
+	.bubbledRight:before {
+	    border-bottom: 9px solid #07D;
+	    border-right: 9px solid rgba(0, 0, 0, 0);
+	    position: absolute;
+	    bottom: 0;
+	    right: -8px;
+	    content: "";
+	}	
+	
+	.commentArea .text-center{
+		font-size: 12px;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.commentArea{
+		transition: all 0.4s ease-out;
+	}
+	.animated{
+		animation-duration: 0.6s;
+	}	
+	</style>
+</head>
+<body>
+<div class="container">
+	<div class="row">
+		<div class="col-sm-6">
+			<h3>쳇팅 bubble</h3>
+			<div class="commentArea">
+				
+			</div>
+		</div>
+	</div>
+	<div class="row" id="msgControl">
+		<div class="col-sm-6">
+			<div class="input-group">
+				<input id="inputMsg" type="text" class="form-control" placeholder="메세지 입력..."/>
+			    <span class="input-group-btn">
+			        <button id="sendBtn" class="btn btn-primary" type="button">Send</button>
+			    </span>
+			</div><!-- /input-group -->
+		</div>
+	</div>
+	<button class="btn btn-warning" id="testBtn">도착 메세지 테스트</button>
+</div>
+<script src="js/jquery-3.3.1.js"></script>
+<script src="js/bootstrap.js"></script>
+<script>
+	var chatName="성영한님";
+	//전송 버튼을 눌렀을때
+	$("#sendBtn").click(function(){
+		sendMessage();
+	});
+	//도착 메세지 테스트 버튼을 눌렀을때
+	$("#testBtn").click(function(){
+		getMessage();
+	});
+	//대화 전송 버튼을 누르지 않고 엔터키를 눌렀을때 
+	$("#inputMsg").on("input",function(event){
+		if(event.keyCode==13){
+			sendMessage();
+		}
+	});
+	//새로운 대화 전송 처리 
+	function sendMessage(){
+		var msg=$("#inputMsg").val();
+		$("#inputMsg").val("").focus();
+		
+		$("<div class='text-center text-danger animated bounceInDown'>")
+		.text(getTimeText())
+		.appendTo(".commentArea");
+		//대화창에 내 메세지 표시 
+		$("<div class='bubbledRight animated bounceInDown'></div>")
+		.text(chatName+":"+msg)
+		.appendTo(".commentArea");
+		addClear();
+		$(".commentArea").scrollTop(999999999);	
+	}
+	//새로운 대화 도착 처리
+	function getMessage(){
+		$("<div class='text-center text-danger animated bounceInDown'>")
+		.text(getTimeText())
+		.appendTo(".commentArea");
+		//도착 메세지
+		var msg=`
+			[ Acorn:오늘의 응답입니다.]
+			어쩌구..
+			저쩌구..
+			하나...
+			두울...
+		`;
+		//대화창에 도착 메세지 표시 
+		$("<div class='bubbledLeft animated bounceInDown'></div>")
+		.text(msg)
+		.appendTo(".commentArea");
+		addClear();
+		$(".commentArea").scrollTop(999999999);	
+	}
+	function getTimeText(){
+		var date=new Date();
+		var hour=date.getHours();
+		var min=date.getMinutes();
+		var str=hour+"시 "+min+"분 ";
+		return str;
+	}
+	function addClear(){
+		$("<div class='clearfix'/>").appendTo(".commentArea");
+	}
+	
+</script>	
+</body>
+</html>
